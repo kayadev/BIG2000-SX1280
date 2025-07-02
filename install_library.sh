@@ -98,24 +98,34 @@ fi
 if [ -d "$PROJECT_DIR/examples" ]; then
     mkdir -p "$TARGET_DIR/examples"
     
-    # .ino dosyalarını bul ve her biri için klasör oluştur
-    for ino_file in "$PROJECT_DIR/examples"/*.ino; do
-        if [ -f "$ino_file" ]; then
-            filename=$(basename "$ino_file" .ino)
-            mkdir -p "$TARGET_DIR/examples/$filename"
-            cp "$ino_file" "$TARGET_DIR/examples/$filename/"
-            echo -e "${GREEN}   ✅ $filename örneği kopyalandı${NC}"
-        fi
-    done
+    echo -e "${BLUE}   📁 Examples kopyalanıyor ve formatlanıyor...${NC}"
     
-    # Eğer examples alt klasörleri varsa onları da kopyala
+    # Mevcut examples alt klasörlerini direkt kopyala (zaten doğru formatta)
     for example_dir in "$PROJECT_DIR/examples"/*/; do
         if [ -d "$example_dir" ]; then
             example_name=$(basename "$example_dir")
-            cp -r "$example_dir" "$TARGET_DIR/examples/"
+            # Sadece klasörün içeriğini kopyala, klasörün kendisini değil
+            mkdir -p "$TARGET_DIR/examples/$example_name"
+            cp -r "$example_dir"* "$TARGET_DIR/examples/$example_name/"
             echo -e "${GREEN}   ✅ $example_name örneği kopyalandı${NC}"
         fi
     done
+    
+    # Eğer examples klasöründe direkt .ino dosyaları varsa onları da klasörlere koy
+    # Ama sadece alt klasör yoksa yapalım
+    direct_ino_files=($(find "$PROJECT_DIR/examples" -maxdepth 1 -name "*.ino"))
+    if [ ${#direct_ino_files[@]} -gt 0 ]; then
+        echo -e "${YELLOW}   ⚠️  Düz .ino dosyaları bulundu, klasörlere taşınıyor...${NC}"
+        for ino_file in "${direct_ino_files[@]}"; do
+            filename=$(basename "$ino_file" .ino)
+            # Sadece aynı isimde klasör yoksa oluştur
+            if [ ! -d "$TARGET_DIR/examples/$filename" ]; then
+                mkdir -p "$TARGET_DIR/examples/$filename"
+                cp "$ino_file" "$TARGET_DIR/examples/$filename/"
+                echo -e "${GREEN}   ✅ $filename örneği kopyalandı (klasör formatında)${NC}"
+            fi
+        done
+    fi
 fi
 
 # Diğer önemli dosyaları kopyala
