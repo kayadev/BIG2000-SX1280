@@ -1,0 +1,112 @@
+#######################################
+# BIG2000_SX1280 Library - Keywords
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+BIG2000_SX1280	KEYWORD1
+SX1280_Status_t	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+# Başlatma
+begin	KEYWORD2
+isInitialized	KEYWORD2
+
+# Register İşlemleri
+readRegister	KEYWORD2
+writeRegister	KEYWORD2
+burstReadRegister	KEYWORD2
+burstWriteRegister	KEYWORD2
+
+# LoRa Konfigürasyon
+setFrequency	KEYWORD2
+setBandwidth	KEYWORD2
+setSpreadingFactor	KEYWORD2
+setCodeRate	KEYWORD2
+setPreambleLength	KEYWORD2
+setTxPower	KEYWORD2
+
+# Modül Kontrol
+setSleep	KEYWORD2
+setStandby	KEYWORD2
+setFrequencySynthesis	KEYWORD2
+setTx	KEYWORD2
+setRx	KEYWORD2
+
+# Veri İletimi
+transmit	KEYWORD2
+receive	KEYWORD2
+isTransmitComplete	KEYWORD2
+isReceiveComplete	KEYWORD2
+
+# Durum Kontrol
+getPacketStatus	KEYWORD2
+getRSSI	KEYWORD2
+getSNR	KEYWORD2
+getChipVersion	KEYWORD2
+
+# Buffer İşlemleri
+writeBuffer	KEYWORD2
+readBuffer	KEYWORD2
+
+# Hata Yönetimi
+getLastError	KEYWORD2
+statusToString	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+# Hata Kodları
+SX1280_OK	LITERAL1
+SX1280_ERROR_NOT_INITIALIZED	LITERAL1
+SX1280_ERROR_NULL_PTR	LITERAL1
+SX1280_ERROR_SPI	LITERAL1
+SX1280_ERROR_INVALID_PARAM	LITERAL1
+SX1280_ERROR_UNKNOWN	LITERAL1
+
+# Spreading Factor
+SX1280_SF5	LITERAL1
+SX1280_SF6	LITERAL1
+SX1280_SF7	LITERAL1
+SX1280_SF8	LITERAL1
+SX1280_SF9	LITERAL1
+SX1280_SF10	LITERAL1
+SX1280_SF11	LITERAL1
+SX1280_SF12	LITERAL1
+
+# Bandwidth
+SX1280_BW_203125	LITERAL1
+SX1280_BW_406250	LITERAL1
+SX1280_BW_812500	LITERAL1
+SX1280_BW_1625000	LITERAL1
+
+# Code Rate
+SX1280_CR_4_5	LITERAL1
+SX1280_CR_4_6	LITERAL1
+SX1280_CR_4_7	LITERAL1
+SX1280_CR_4_8	LITERAL1
+
+# Güç Seviyeleri
+SX1280_POWER_MIN	LITERAL1
+SX1280_POWER_MAX	LITERAL1
+
+# Default Değerler
+SX1280_DEFAULT_FREQ	LITERAL1
+SX1280_DEFAULT_BW	LITERAL1
+
+# Pin Tanımları
+PIN_SCK	LITERAL1
+PIN_MISO	LITERAL1
+PIN_MOSI	LITERAL1
+PIN_CS	LITERAL1
+PIN_RST	LITERAL1
+PIN_BUSY	LITERAL1
+PIN_DIO1	LITERAL1
+PIN_LED	LITERAL1
+PIN_BUTTON	LITERAL1
