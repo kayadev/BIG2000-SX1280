@@ -17,11 +17,24 @@ BIG2000_SX1280::BIG2000_SX1280(uint8_t sck, uint8_t miso, uint8_t mosi, uint8_t 
 
 bool BIG2000_SX1280::begin()
 {
-// ESP32 için VSPI kullan, diğer platformlar için varsayılan SPI
+// Platform uyumlu SPI başlatma
 #ifdef ESP32
+// ESP32 ve ESP32-S3 için uyumlu SPI başlatma
+#ifdef CONFIG_IDF_TARGET_ESP32S3
+    // ESP32-S3 için custom SPI
+    _spi = new SPIClass(SPI2_HOST);
+#elif ESP_ARDUINO_VERSION >= ESP_ARDUINO_VERSION_VAL(2, 0, 0)
+    // ESP32 Core 2.0+ için HSPI kullan
+    _spi = new SPIClass(SPI2_HOST);
+#else
+    // Eski ESP32 core için VSPI
     _spi = new SPIClass(VSPI);
+#endif
+
+    // Custom SPI pinleri ile başlat
     _spi->begin(_sck, _miso, _mosi, _cs);
 #else
+    // Arduino Uno/Nano için varsayılan SPI
     _spi = &SPI;
     SPI.begin();
 #endif

@@ -14,6 +14,28 @@ ESP32 tabanlı sistemler için geliştirilmiş SX1280 LoRa modül kütüphanesi.
 
 ## 📦 Kurulum
 
+### ⚡ Hızlı Kurulum (Otomatik Script)
+
+**macOS/Linux:**
+
+```bash
+./install_library.sh
+```
+
+**Windows:**
+
+```cmd
+install_library.bat
+```
+
+### 🔧 VS Code ile Kurulum
+
+1. VS Code'da `Cmd+Shift+P` (macOS) veya `Ctrl+Shift+P` (Windows/Linux)
+2. "Tasks: Run Task" yazın
+3. "Arduino Kütüphanesini Yükle" seçin
+
+### 📁 Manuel Kurulum
+
 1. Bu kütüphaneyi Arduino IDE'nin `libraries` klasörüne kopyalayın
 2. Arduino IDE'yi yeniden başlatın
 3. `#include "BIG2000_SX1280.h"` ile kullanmaya başlayın
