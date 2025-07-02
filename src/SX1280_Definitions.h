@@ -1,6 +1,13 @@
 #ifndef SX1280_DEFINITIONS_H
 #define SX1280_DEFINITIONS_H
 
+// Platform uyumluluğu için include guard
+#if ARDUINO >= 100
+#include <Arduino.h>
+#else
+#include <WProgram.h>
+#endif
+
 // SX1280 Register Adresleri (örnekler)
 #define SX1280_REG_CHIP_VERSION 0x091F
 #define SX1280_REG_OPMODE 0x900

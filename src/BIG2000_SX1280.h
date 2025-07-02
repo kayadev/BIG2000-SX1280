@@ -1,8 +1,14 @@
 #ifndef BIG2000_SX1280_H
 #define BIG2000_SX1280_H
 
+#if ARDUINO >= 100
 #include <Arduino.h>
+#else
+#include <WProgram.h>
+#endif
+
 #include <SPI.h>
+#include "SX1280_Definitions.h"
 
 // Hata kodları
 typedef enum

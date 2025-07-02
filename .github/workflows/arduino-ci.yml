@@ -1,0 +1,89 @@
+name: Arduino Library CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Arduino Lint
+        uses: arduino/arduino-lint-action@v1
+        with:
+          library-manager: update
+          compliance: strict
+
+  compile:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        board:
+          - esp32:esp32:esp32s3
+          - esp32:esp32:esp32
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Arduino CLI
+        uses: arduino/setup-arduino-cli@v1
+
+      - name: Install ESP32 platform
+        run: |
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32
+
+      - name: Compile Examples
+        run: |
+          arduino-cli compile --fqbn ${{ matrix.board }} examples/basic_test/basic_test.ino
+          arduino-cli compile --fqbn ${{ matrix.board }} examples/advanced_communication/advanced_communication.ino
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check Library Structure
+        run: |
+          # Arduino kütüphane yapısını kontrol et
+          if [ ! -f library.properties ]; then
+            echo "library.properties missing"
+            exit 1
+          fi
+
+          if [ ! -d src ]; then
+            echo "src directory missing"
+            exit 1
+          fi
+
+          if [ ! -d examples ]; then
+            echo "examples directory missing"
+            exit 1
+          fi
+
+          echo "Library structure is valid!"
+
+  release:
+    needs: [lint, compile, test]
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false

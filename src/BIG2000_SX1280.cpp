@@ -17,8 +17,15 @@ BIG2000_SX1280::BIG2000_SX1280(uint8_t sck, uint8_t miso, uint8_t mosi, uint8_t 
 
 bool BIG2000_SX1280::begin()
 {
+// ESP32 için VSPI kullan, diğer platformlar için varsayılan SPI
+#ifdef ESP32
     _spi = new SPIClass(VSPI);
     _spi->begin(_sck, _miso, _mosi, _cs);
+#else
+    _spi = &SPI;
+    SPI.begin();
+#endif
+
     pinMode(_cs, OUTPUT);
     digitalWrite(_cs, HIGH);
 
@@ -699,7 +706,7 @@ SX1280_Status_t BIG2000_SX1280::waitOnBusy()
         return SX1280_OK;
     }
 
-    uint32_t start = millis();
+    unsigned long start = millis();
     while (digitalRead(_busy) == HIGH)
     {
         if (millis() - start > 1000)
@@ -707,7 +714,11 @@ SX1280_Status_t BIG2000_SX1280::waitOnBusy()
             _lastError = SX1280_ERROR_SPI;
             return _lastError;
         }
-        delay(1);
+#ifdef ESP32
+        delayMicroseconds(100); // ESP32 için mikrosaniye gecikme
+#else
+        delay(1); // Diğer platformlar için milisaniye
+#endif
     }
 
     return SX1280_OK;
